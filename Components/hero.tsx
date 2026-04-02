@@ -3,7 +3,7 @@ import TechStackPreview from "@/Components/LogoMarqueeRow";
 export function HeroSection() {
   return (
     <section className="border-b pt-10 font-semibold bg-[linear-gradient(135deg,#FFD1CC_0%,#FFE5DE_25%,#FFF3EB_55%,#FFF8F3_100%)] border-slate-200 bg-[#f7f7f5]">
-      <div className="mx-auto max-w-7xl px-6 py-14 lg:px-8 lg:py-20">
+      <div className="mx-auto max-w-7xl px-6 py-14 lg:px-8 ">
         <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-emerald-700">
