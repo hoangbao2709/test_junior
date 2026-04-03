@@ -1,23 +1,70 @@
-import { vpnList } from "./data";
+"use client";
 
-export function TopVpnSection() {
+import { getVpnList } from "./data";
+import type { Dictionary, Locale } from "./i18n";
+
+type TopVpnSectionProps = {
+  t: Dictionary;
+  locale: Locale;
+};
+
+function localizeText(
+  locale: Locale,
+  value: { en: string; vi: string; de: string; ar: string }
+) {
+  if (locale === "vi") return value.vi;
+  if (locale === "de") return value.de;
+  if (locale === "ar") return value.ar;
+  return value.en;
+}
+
+export function TopVpnSection({ t, locale }: TopVpnSectionProps) {
+  const vpnList = getVpnList(locale);
+  const isRTL = locale === "ar";
+
+  const guaranteeValue = localizeText(locale, {
+    en: "30 days",
+    vi: "30 ngày",
+    de: "30 Tage",
+    ar: "30 يومًا",
+  });
+  const headingFontFamily =
+    locale === "vi"
+      ? "Arial, Helvetica, sans-serif"
+      : "Georgia, ui-serif, serif";
   return (
-    <section id="top-vpns" className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
-      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <section
+      id="top-vpns"
+      dir="ltr"
+      className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20"
+      style={{ fontFamily: headingFontFamily }}
+    >
+      <div
+        className={` flex-col gap-4 md:flex-row md:items-end md:justify-between ${
+          isRTL ? "text-right" : "text-left"
+        }`}
+      >
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-700">
-            Top VPN list
-          </p>
-          <h2
-            className="mt-3 text-4xl font-semibold tracking-tight text-slate-900"
-            style={{ fontFamily: "Georgia, ui-serif, serif" }}
+          <p
+            dir={isRTL ? "rtl" : "ltr"}
+            className="text-sm  uppercase tracking-[0.18em] text-emerald-700 sm:text-xl font-bold"
           >
-            Our top VPN services for 2026
+            {t.topVpn.eyebrow}
+          </p>
+
+          <h2
+            dir={isRTL ? "rtl" : "ltr"}
+            className="mt-3 text-4xl  tracking-tight text-slate-900 font-bold"
+          >
+            {t.topVpn.title}
           </h2>
         </div>
-        <p className="max-w-2xl text-base leading-7 text-slate-600">
-          Designed like a real affiliate ranking page: fast to scan, easy to compare, and
-          structured around the user’s decision journey.
+
+        <p
+          dir={isRTL ? "rtl" : "ltr"}
+          className="max-w-2xl text-base leading-7 text-slate-600"
+        >
+          {t.topVpn.desc}
         </p>
       </div>
 
@@ -25,28 +72,62 @@ export function TopVpnSection() {
         {vpnList.map((vpn) => (
           <article
             key={vpn.name}
-            className={`overflow-hidden   border border-slate-200 bg-white shadow-lg bg-gradient-to-br ${vpn.accent} shadow-slate-100`}
+            className={`overflow-hidden border border-slate-200 bg-white bg-gradient-to-br shadow-lg shadow-slate-100 ${vpn.accent}`}
           >
             <div className="grid gap-0 lg:grid-cols-[120px_1.15fr_0.9fr_180px]">
-              <div className={`flex items-center justify-center border-b border-slate-200 bg-gradient-to-br ${vpn.accent}  p-6 lg:border-b-0 lg:border-r`}>
+              <div
+                className={`flex items-center justify-center border-b border-slate-200 bg-gradient-to-br p-6 lg:border-b-0 lg:border-r ${vpn.accent}`}
+              >
                 <div className="text-center">
-                  <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Rank</div>
-                  <div className="mt-2 text-4xl font-semibold text-slate-900">#{vpn.rank}</div>
+                  <div
+                    dir={isRTL ? "rtl" : "ltr"}
+                    className="text-xs uppercase tracking-[0.2em] text-slate-500"
+                  >
+                    {t.topVpn.rank}
+                  </div>
+                  <div className="mt-2 text-4xl  text-slate-900">
+                    #{vpn.rank}
+                  </div>
                 </div>
               </div>
 
-              <div className="border-b border-slate-200 p-6 lg:border-b-0 lg:border-r">
-                <div className="flex flex-wrap items-center gap-3">
-                  <h3 className="text-2xl font-semibold text-slate-900">{vpn.name}</h3>
-                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+              <div
+                className={`border-b border-slate-200 p-6 lg:border-b-0 lg:border-r ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
+                <div
+                  className={`flex flex-wrap items-center gap-3 ${
+                    isRTL ? "justify-end" : ""
+                  }`}
+                >
+                  <h3 className="text-2xl  text-slate-900">
+                    {vpn.name}
+                  </h3>
+                  <span
+                    dir={isRTL ? "rtl" : "ltr"}
+                    className="rounded-full bg-slate-100 px-3 py-1 text-xs  text-slate-700"
+                  >
                     {vpn.badge}
                   </span>
                 </div>
-                <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">{vpn.summary}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
+
+                <p
+                  dir={isRTL ? "rtl" : "ltr"}
+                  className="mt-3 max-w-2xl text-base leading-7 text-slate-600"
+                >
+                  {vpn.summary}
+                </p>
+
+                <div
+                  className={`mt-4 flex flex-wrap gap-2 ${
+                    isRTL ? "justify-end" : ""
+                  }`}
+                >
                   {vpn.highlights.map((item) => (
                     <span
                       key={item}
+                      dir={isRTL ? "rtl" : "ltr"}
                       className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm text-slate-700"
                     >
                       {item}
@@ -55,18 +136,47 @@ export function TopVpnSection() {
                 </div>
               </div>
 
-              <div className={`bg-gradient-to-br ${vpn.accent} p-6`}>
+              <div className={`bg-gradient-to-br p-6 ${vpn.accent}`}>
                 <div className="rounded-[1.25rem] border border-white/50 bg-white/80 p-5 backdrop-blur">
-                  <div className="text-sm text-slate-500">Editor score</div>
-                  <div className="mt-1 text-3xl font-semibold text-slate-900">{vpn.score}</div>
+                  <div
+                    dir={isRTL ? "rtl" : "ltr"}
+                    className={`text-sm text-slate-500 ${
+                      isRTL ? "text-right" : "text-left"
+                    }`}
+                  >
+                    {t.topVpn.editorScore}
+                  </div>
+
+                  <div className="mt-1 text-3xl  text-slate-900">
+                    {vpn.score}
+                  </div>
+
                   <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                    <div className="rounded-xl bg-white p-3">
-                      <div className="text-slate-500">Price</div>
-                      <div className="mt-1 font-semibold text-slate-900">{vpn.price}</div>
+                    <div className={`rounded-xl bg-white p-3 ${isRTL ? "text-right" : "text-left"}`}>
+                      <div
+                        dir={isRTL ? "rtl" : "ltr"}
+                        className="text-slate-500"
+                      >
+                        {t.topVpn.price}
+                      </div>
+                      <div className="mt-1  text-slate-900">
+                        {vpn.price}
+                      </div>
                     </div>
-                    <div className="rounded-xl bg-white p-3">
-                      <div className="text-slate-500">Guarantee</div>
-                      <div className="mt-1 font-semibold text-slate-900">30 days</div>
+
+                    <div className={`rounded-xl bg-white p-3 ${isRTL ? "text-right" : "text-left"}`}>
+                      <div
+                        dir={isRTL ? "rtl" : "ltr"}
+                        className="text-slate-500"
+                      >
+                        {t.topVpn.guarantee}
+                      </div>
+                      <div
+                        dir={isRTL ? "rtl" : "ltr"}
+                        className="mt-1  text-slate-900"
+                      >
+                        {guaranteeValue}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -75,12 +185,13 @@ export function TopVpnSection() {
               <div className="flex flex-col items-stretch justify-center gap-3 p-6">
                 <a
                   href="#cta"
-                  className="inline-flex items-center justify-center rounded-full bg-emerald-600 px-3 py-3.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
+                  className="inline-flex items-center justify-center rounded-full bg-emerald-600 px-3 py-3.5 text-sm  text-white transition hover:bg-emerald-700"
                 >
-                  {vpn.cta}
+                  <span dir={isRTL ? "rtl" : "ltr"}>{vpn.cta}</span>
                 </a>
-                <button className="rounded-full border cursor-pointer border-slate-300 px-5 py-3.5 text-sm font-semibold text-slate-800 transition hover:border-slate-900">
-                  Read review
+
+                <button className="cursor-pointer rounded-full border border-slate-300 px-5 py-3.5 text-sm  text-slate-800 transition hover:border-slate-900">
+                  <span dir={isRTL ? "rtl" : "ltr"}>{t.topVpn.readReview}</span>
                 </button>
               </div>
             </div>
